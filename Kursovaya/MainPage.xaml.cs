@@ -2,23 +2,28 @@
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private void AddNoteButton_Clicked(object sender, EventArgs e)
         {
-            count++;
+            var noteFrame = new Frame
+            {
+                CornerRadius = 20,
+                BackgroundColor = Color.FromArgb("#FF383838"),
+                Padding = new Thickness(16),
+                Margin = new Thickness(0, 0, 0, 10),
+                Content = new Label
+                {
+                    Text = "заметка",
+                    FontSize = 18,
+                    TextColor = Color.FromArgb("#FFFAFAFA")
+                }
+            };
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            NotesStack.Children.Add(noteFrame);
         }
     }
 
