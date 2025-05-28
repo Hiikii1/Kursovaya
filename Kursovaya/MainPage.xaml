@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Kursovaya.MainPage"
              BackgroundColor="#FF171717">
-            
     <Grid>
         <ScrollView>
             <VerticalStackLayout
@@ -13,7 +12,6 @@
                 <!-- Здесь будут появляться заметки -->
             </VerticalStackLayout>
         </ScrollView>
-
         <Button
             x:Name="AddNoteButton"
             Text="+" 
