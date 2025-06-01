@@ -73,7 +73,11 @@ public partial class NotePage : ContentPage, INotifyPropertyChanged
         {
             MainPage.Notes[Index] = (NoteTitle, NoteContent);
         }
-        await Shell.Current.GoToAsync("..");
+        if (Shell.Current.Navigation.NavigationStack.Count > 1)
+            await Shell.Current.GoToAsync("..");
+        else
+            await Shell.Current.GoToAsync("//MainPage");
+
     }
 
     void OnPropertyChanged(string propertyName) =>

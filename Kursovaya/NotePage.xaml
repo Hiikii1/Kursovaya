@@ -2,18 +2,27 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Kursovaya.NotePage"
-             Title="Заметка">
+             Title="Заметка"
+             BackgroundColor="#FF171717">
     <VerticalStackLayout Padding="20" Spacing="16">
         <Entry
-            Placeholder="Заголовок"
-            Text="{Binding NoteTitle, Mode=TwoWay}" />
+        Placeholder="Заголовок"
+        Text="{Binding NoteTitle, Mode=TwoWay}"
+        BackgroundColor="#FF383838"
+        TextColor="White"
+        PlaceholderColor="#FFAAAAAA"/>
         <Editor
-            Placeholder="Текст заметки"
-            AutoSize="TextChanges"
-            HeightRequest="200"
-            Text="{Binding NoteContent, Mode=TwoWay}" />
+        Placeholder="Текст заметки"
+        AutoSize="TextChanges"
+        HeightRequest="200"
+        Text="{Binding NoteContent, Mode=TwoWay}"
+        BackgroundColor="#FF383838"
+        TextColor="White"
+        PlaceholderColor="#FFAAAAAA"/>
         <Button
-            Text="Сохранить"
-            Clicked="OnSaveClicked" />
+        Text="Сохранить"
+        Clicked="OnSaveClicked"
+        BackgroundColor="#FFD24014"
+        TextColor="White"/>
     </VerticalStackLayout>
 </ContentPage>
