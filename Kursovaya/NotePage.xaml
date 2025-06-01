@@ -4,7 +4,7 @@
              x:Class="Kursovaya.NotePage"
              Title="Заметка"
              BackgroundColor="#FF171717">
-    <VerticalStackLayout Padding="20" Spacing="16">
+    <VerticalStackLayout Padding="20" Spacing="16" >
         <Entry
         Placeholder="Заголовок"
         Text="{Binding NoteTitle, Mode=TwoWay}"
@@ -19,10 +19,20 @@
         BackgroundColor="#FF383838"
         TextColor="White"
         PlaceholderColor="#FFAAAAAA"/>
-        <Button
+        <Grid ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+            <Button
         Text="Сохранить"
         Clicked="OnSaveClicked"
         BackgroundColor="#FFD24014"
-        TextColor="White"/>
+        TextColor="White"
+        Grid.Column="0"/>
+            <Button
+        Text="Удалить"
+        Clicked="OnDeleteClicked"
+        BackgroundColor="#660000"
+        TextColor="White"
+        Grid.Column="1"/>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

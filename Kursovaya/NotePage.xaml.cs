@@ -80,6 +80,18 @@ public partial class NotePage : ContentPage, INotifyPropertyChanged
 
     }
 
+    private async void OnDeleteClicked(object? sender, EventArgs e)
+    {
+        if (Index >= 0 && Index < MainPage.Notes.Count)
+        {
+            MainPage.Notes.RemoveAt(Index);
+        }
+        if (Shell.Current.Navigation.NavigationStack.Count > 1)
+            await Shell.Current.GoToAsync("..");
+        else
+            await Shell.Current.GoToAsync("//MainPage");
+    }
+
     void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
