@@ -13,6 +13,7 @@ public partial class MainPage : ContentPage
     {
         base.OnAppearing();
         RefreshNotes();
+        SearchEntry.Text = "";
     }
 
     public void RefreshNotes()
@@ -25,8 +26,8 @@ public partial class MainPage : ContentPage
             {
                 CornerRadius = 20,
                 BackgroundColor = Color.FromArgb("#FF383838"),
-                Padding = new Thickness(16),
-                Margin = new Thickness(0, 0, 0, 10),
+                Padding = new Thickness(20),
+                Margin = new Thickness(0, 0, 0, 4),
                 Content = new Label
                 {
                     Text = note.Title,
@@ -60,4 +61,52 @@ public partial class MainPage : ContentPage
             RefreshNotes();
         }
     }
+
+    private void SearchEntry_Completed(object sender, EventArgs e)
+    {
+        string searchText = SearchEntry.Text?.Trim() ?? "";
+        if (string.IsNullOrEmpty(searchText))
+        {
+            RefreshNotes(); // Показываем все заметки
+        }
+        else
+        {
+            var filtered = Notes
+                .Select((note, idx) => (note, idx))
+                .Where(x => x.note.Title == searchText)
+                .ToList();
+            NotesStack.Children.Clear();
+            foreach (var (note, index) in filtered)
+            {
+                var frame = CreateNote(note.Title, index);
+                NotesStack.Children.Add(frame);
+            }
+        }
+    }
+
+    // Универсальный метод для создания блока заметки без кнопки удаления
+    private Frame CreateNote(string title, int index)
+    {
+        var frame = new Frame
+        {
+            CornerRadius = 20,
+            BackgroundColor = Color.FromArgb("#FF383838"),
+            Padding = new Thickness(20),
+            Margin = new Thickness(0, 0, 0, 4),
+            Content = new Label
+            {
+                Text = title,
+                FontSize = 18,
+                TextColor = Color.FromArgb("#FFFAFAFA")
+            }
+        };
+        var tapGesture = new TapGestureRecognizer();
+        tapGesture.Tapped += async (s, e) =>
+        {
+            await Shell.Current.GoToAsync($"{nameof(NotePage)}?index={index}");
+        };
+        frame.GestureRecognizers.Add(tapGesture);
+        return frame;
+    }
+
 }

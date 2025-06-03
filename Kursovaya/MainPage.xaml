@@ -4,14 +4,22 @@
              x:Class="Kursovaya.MainPage"
              BackgroundColor="#FF171717">
     <Grid>
-        <ScrollView>
-            <VerticalStackLayout
-                x:Name="NotesStack"
-                Padding="30,0"
-                Spacing="25">
-                <!-- Здесь будут появляться заметки -->
-            </VerticalStackLayout>
-        </ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="15">
+            <Entry x:Name="SearchEntry"
+           Placeholder="Поиск по названию"
+           BackgroundColor="#FF383838"
+           TextColor="White"
+           PlaceholderColor="#FFAAAAAA"
+           Completed="SearchEntry_Completed"
+           Margin="0,20,0,0"/>
+            <ScrollView>
+                <VerticalStackLayout
+            x:Name="NotesStack"
+            Spacing="25">
+                    <!-- Здесь будут появляться заметки -->
+                </VerticalStackLayout>
+            </ScrollView>
+        </VerticalStackLayout>
         <Button
             x:Name="AddNoteButton"
             Text="+" 
