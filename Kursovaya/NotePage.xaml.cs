@@ -56,6 +56,20 @@ public partial class NotePage : ContentPage, INotifyPropertyChanged
         BindingContext = this;
     }
 
+    private DateTime _created;
+    public DateTime Created
+    {
+        get => _created;
+        set
+        {
+            if (_created != value)
+            {
+                _created = value;
+                OnPropertyChanged(nameof(Created));
+            }
+        }
+    }
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -64,6 +78,7 @@ public partial class NotePage : ContentPage, INotifyPropertyChanged
         {
             NoteTitle = MainPage.Notes[Index].Title;
             NoteContent = MainPage.Notes[Index].Content;
+            Created = MainPage.Notes[Index].Created;
         }
     }
 
@@ -71,7 +86,7 @@ public partial class NotePage : ContentPage, INotifyPropertyChanged
     {
         if (Index >= 0 && Index < MainPage.Notes.Count)
         {
-            MainPage.Notes[Index] = (NoteTitle, NoteContent);
+            MainPage.Notes[Index] = (NoteTitle, NoteContent, Created);
         }
         if (Shell.Current.Navigation.NavigationStack.Count > 1)
             await Shell.Current.GoToAsync("..");

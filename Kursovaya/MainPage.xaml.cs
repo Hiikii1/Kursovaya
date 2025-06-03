@@ -2,7 +2,7 @@
 
 public partial class MainPage : ContentPage
 {
-    public static List<(string Title, string Content)> Notes = new();
+    public static List<(string Title, string Content, DateTime Created)> Notes = new();
 
     public MainPage()
     {
@@ -22,19 +22,62 @@ public partial class MainPage : ContentPage
         for (int i = 0; i < Notes.Count; i++)
         {
             var note = Notes[i];
+            var dateLabel = new Label
+            {
+                Text = note.Created.ToString("dd.MM.yy"),
+                FontSize = 13,
+                TextColor = Color.FromArgb("#FFAAAAAA"),
+                HorizontalTextAlignment = TextAlignment.End
+            };
+            var timeLabel = new Label
+            {
+                Text = note.Created.ToString("HH:mm:ss"),
+                FontSize = 12,
+                TextColor = Color.FromArgb("#FFAAAAAA"),
+                HorizontalTextAlignment = TextAlignment.End
+            };
+
+            var infoStack = new VerticalStackLayout
+            {
+                Spacing = 2,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center,
+                Children = { dateLabel, timeLabel },
+                WidthRequest = 60 // фиксированная ширина для даты и времени
+            };
+
+            var titleLabel = new Label
+            {
+                Text = note.Title,
+                FontSize = 18,
+                TextColor = Color.FromArgb("#FFFAFAFA"),
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                LineBreakMode = LineBreakMode.TailTruncation, // "..." если не помещается
+                MaxLines = 2 // максимум две строки
+            };
+
+            var grid = new Grid
+            {
+                ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Auto)
+            },
+                VerticalOptions = LayoutOptions.Center,
+            };
+            grid.Add(titleLabel, 0, 0);
+            grid.Add(infoStack, 1, 0);
+
             var frame = new Frame
             {
                 CornerRadius = 20,
                 BackgroundColor = Color.FromArgb("#FF383838"),
                 Padding = new Thickness(20),
                 Margin = new Thickness(0, 0, 0, 4),
-                Content = new Label
-                {
-                    Text = note.Title,
-                    FontSize = 18,
-                    TextColor = Color.FromArgb("#FFFAFAFA")
-                }
+                Content = grid
             };
+
             int index = i;
             var tapGesture = new TapGestureRecognizer();
             tapGesture.Tapped += async (s, e) =>
@@ -48,7 +91,7 @@ public partial class MainPage : ContentPage
 
     private async void AddNoteButton_Clicked(object? sender, EventArgs e)
     {
-        Notes.Add(("Заметка", ""));
+        Notes.Add(("Заметка", "", DateTime.Now));
         int index = Notes.Count - 1;
         await Shell.Current.GoToAsync($"{nameof(NotePage)}?index={index}");
     }
@@ -57,7 +100,7 @@ public partial class MainPage : ContentPage
     {
         if (index >= 0 && index < Notes.Count)
         {
-            Notes[index] = (title, content);
+            Notes[index] = (title, content, Notes[index].Created);
             RefreshNotes();
         }
     }
@@ -84,22 +127,54 @@ public partial class MainPage : ContentPage
         }
     }
 
-    // Универсальный метод для создания блока заметки без кнопки удаления
     private Frame CreateNote(string title, int index)
     {
+        var created = Notes[index].Created;
+        var dateLabel = new Label
+        {
+            Text = created.ToString("dd.MM.yy"),
+            FontSize = 13,
+            TextColor = Color.FromArgb("#FFAAAAAA"),
+            HorizontalTextAlignment = TextAlignment.End
+        };
+        var timeLabel = new Label
+        {
+            Text = created.ToString("HH:mm:ss"),
+            FontSize = 12,
+            TextColor = Color.FromArgb("#FFAAAAAA"),
+            HorizontalTextAlignment = TextAlignment.End
+        };
+
+        var infoStack = new VerticalStackLayout
+        {
+            Spacing = 2,
+            HorizontalOptions = LayoutOptions.End,
+            Children = { dateLabel, timeLabel }
+        };
+
+        var titleLabel = new Label
+        {
+            Text = title,
+            FontSize = 18,
+            TextColor = Color.FromArgb("#FFFAFAFA"),
+            VerticalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.StartAndExpand
+        };
+
+        var contentStack = new HorizontalStackLayout
+        {
+            Children = { titleLabel, infoStack }
+        };
+
         var frame = new Frame
         {
             CornerRadius = 20,
             BackgroundColor = Color.FromArgb("#FF383838"),
             Padding = new Thickness(20),
             Margin = new Thickness(0, 0, 0, 4),
-            Content = new Label
-            {
-                Text = title,
-                FontSize = 18,
-                TextColor = Color.FromArgb("#FFFAFAFA")
-            }
+            Content = contentStack
         };
+
         var tapGesture = new TapGestureRecognizer();
         tapGesture.Tapped += async (s, e) =>
         {
