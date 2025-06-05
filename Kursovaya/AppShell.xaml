@@ -6,16 +6,14 @@
     xmlns:local="clr-namespace:Kursovaya"
     FlyoutBehavior="Flyout"
     Title="Kursovaya"
-    FlyoutBackgroundColor="#242424"
-    >
+     FlyoutBackgroundColor="#242424">
 
     <ShellContent
         Title="Заметки"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
     <ShellContent
-    Title="Профиль"
-    ContentTemplate="{DataTemplate local:ProfilePage}"
-    Route="ProfilePage" />
-
+        Title="Профиль"
+        ContentTemplate="{DataTemplate local:ProfilePage}"
+        Route="ProfilePage" />
 </Shell>
