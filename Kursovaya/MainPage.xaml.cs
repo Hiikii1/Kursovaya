@@ -149,7 +149,9 @@ public partial class MainPage : ContentPage
         {
             Spacing = 2,
             HorizontalOptions = LayoutOptions.End,
-            Children = { dateLabel, timeLabel }
+            VerticalOptions = LayoutOptions.Center,
+            Children = { dateLabel, timeLabel },
+            WidthRequest = 60 // фиксированная ширина для даты и времени
         };
 
         var titleLabel = new Label
@@ -158,13 +160,22 @@ public partial class MainPage : ContentPage
             FontSize = 18,
             TextColor = Color.FromArgb("#FFFAFAFA"),
             VerticalOptions = LayoutOptions.Center,
-            HorizontalOptions = LayoutOptions.StartAndExpand
+            HorizontalOptions = LayoutOptions.FillAndExpand,
+            LineBreakMode = LineBreakMode.TailTruncation,
+            MaxLines = 2
         };
 
-        var contentStack = new HorizontalStackLayout
+        var grid = new Grid
         {
-            Children = { titleLabel, infoStack }
+            ColumnDefinitions =
+        {
+            new ColumnDefinition(GridLength.Star),
+            new ColumnDefinition(GridLength.Auto)
+        },
+            VerticalOptions = LayoutOptions.Center,
         };
+        grid.Add(titleLabel, 0, 0);
+        grid.Add(infoStack, 1, 0);
 
         var frame = new Frame
         {
@@ -172,7 +183,7 @@ public partial class MainPage : ContentPage
             BackgroundColor = Color.FromArgb("#FF383838"),
             Padding = new Thickness(20),
             Margin = new Thickness(0, 0, 0, 4),
-            Content = contentStack
+            Content = grid
         };
 
         var tapGesture = new TapGestureRecognizer();
@@ -183,5 +194,4 @@ public partial class MainPage : ContentPage
         frame.GestureRecognizers.Add(tapGesture);
         return frame;
     }
-
 }
